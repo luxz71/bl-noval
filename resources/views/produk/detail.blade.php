@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tambah Produk</title>
+</head>
+<body>
+         <h1>Detail Data dengan id {{$produk->id}}</h1>
+
+        <table border="0" width="600">
+            <tr>
+                <td>NAMA BARANG</td>
+                <td><input type="text" name="nama_barang" value="{{ $produk->nama_barang }}"></td>
+            </tr>
+            <tr>
+                <td>JUMLAH BARANG</td>
+                <td><input type="number" name="jumlah" value="{{ $produk->jumlah }}"></td>
+            </tr>
+            <tr>
+                <td><a href="{{ route('produk.index') }}">Kembali</a></td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+
+</body>
+</html>

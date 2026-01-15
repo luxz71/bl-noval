@@ -10,12 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('produk', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_barang');
-            $table->integer('jumlah');
-            $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('suppliers', function (Blueprint $table) {
+            $table->string('no_hp')->after('kota')->default('-');
+            $table->string('alamat')->after('no_hp')->default('-');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('produk');
+        Schema::table('suppliers', function (Blueprint $table) {
+            $table->dropColumn(['no_hp', 'alamat']);
+        });
     }
 };

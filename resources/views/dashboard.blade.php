@@ -100,67 +100,6 @@
         .btn-secondary:hover {
             background: #f8f8f8;
         }
-
-        .recent-activity {
-            margin-top: 1.5rem;
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .recent-activity h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .activity-list {
-            list-style: none;
-        }
-
-        .activity-item {
-            padding: 1rem;
-            background: #f8f8f8;
-            border-radius: 6px;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .activity-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .activity-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.1rem;
-        }
-
-        .activity-content {
-            flex: 1;
-        }
-
-        .activity-content strong {
-            color: #333;
-            font-size: 0.9rem;
-        }
-
-        .activity-content span {
-            color: #666;
-            font-size: 0.85rem;
-            display: block;
-            margin-top: 0.25rem;
-        }
     </style>
 
     <!-- Statistics Cards -->
@@ -178,9 +117,9 @@
         </div>
 
         <div class="stat-card">
-            <h3>Kategori</h3>
-            <div class="stat-value">{{ $totalKategori ?? 3 }}</div>
-            <div class="stat-label">Kategori aktif</div>
+            <h3>Total Supplier</h3>
+            <div class="stat-value">{{ $totalSupplier ?? 0 }}</div>
+            <div class="stat-label">Supplier terdaftar</div>
         </div>
     </div>
 
@@ -190,27 +129,8 @@
         <div class="action-buttons">
             <a href="{{ route('produk.create') }}" class="btn btn-primary">Tambah Produk Baru</a>
             <a href="{{ route('produk.index') }}" class="btn btn-secondary">Lihat Semua Produk</a>
+            <a href="{{ route('supplier.create') }}" class="btn btn-primary">Tambah Supplier Baru</a>
+            <a href="{{ route('supplier.index') }}" class="btn btn-secondary">Lihat Semua Supplier</a>
         </div>
-    </div>
-
-    <!-- Recent Activity -->
-    <div class="recent-activity">
-        <h2>Aktivitas Terbaru</h2>
-        <ul class="activity-list">
-            <li class="activity-item">
-                <div class="activity-icon">📦</div>
-                <div class="activity-content">
-                    <strong>Sistem dimulai</strong>
-                    <span>Dashboard siap digunakan</span>
-                </div>
-            </li>
-            <li class="activity-item">
-                <div class="activity-icon">✨</div>
-                <div class="activity-content">
-                    <strong>Selamat datang!</strong>
-                    <span>Mulai kelola produk Anda sekarang</span>
-                </div>
-            </li>
-        </ul>
     </div>
 @endsection

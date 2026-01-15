@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -12,7 +13,7 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        $data = Produk::all();
+        $data = Produk::with('supplier')->get();
         return view('produk.index', compact('data'));
     }
 
@@ -101,12 +102,30 @@ class ProdukController extends Controller
      */
     public function update(Request $request, Produk $produk)
     {
-        $produk->update([
-            'nama_barang' => $request->nama_barang,
-            'jumlah' => $request->jumlah,
+        $validated = $request->validate([
+            'nama_barang' => [
+                'required',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+            'jumlah' => [
+                'required',
+                'numeric',
+                'min:1',
+            ],
+        ], [
+            'nama_barang.required' => 'Nama barang wajib diisi',
+            'nama_barang.regex' => 'Nama barang hanya boleh berisi huruf dan spasi',
+            'jumlah.required' => 'Jumlah wajib diisi',
+            'jumlah.numeric' => 'Jumlah hanya boleh berisi angka',
+            'jumlah.min' => 'Jumlah minimal 1',
         ]);
 
-        return redirect()->route('produk.index');
+        $produk->update([
+            'nama_barang' => $validated['nama_barang'],
+            'jumlah' => $validated['jumlah'],
+        ]);
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diupdate!');
     }
 
     /**

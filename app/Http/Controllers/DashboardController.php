@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -12,8 +13,8 @@ class DashboardController extends Controller
         // Hitung statistik
         $totalProduk = Produk::count();
         $totalStok = Produk::sum('jumlah');
-        $totalKategori = 3; // Bisa disesuaikan dengan data kategori jika ada
+        $totalSupplier = Supplier::count();
 
-        return view('dashboard', compact('totalProduk', 'totalStok', 'totalKategori'));
+        return view('dashboard', compact('totalProduk', 'totalStok', 'totalSupplier'));
     }
 }

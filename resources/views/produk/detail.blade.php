@@ -1,32 +1,144 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Produk - BL-Noval')
+@section('title', 'Detail Produk - BL-Noval')
 
 @section('content')
+<style>
+    .detail-container {
+        max-width: 800px;
+    }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tambah Produk</title>
-</head>
-<body>
-         <h1>Detail Data dengan id {{$produk->id}}</h1>
+    .detail-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+    }
 
-        <table border="0" width="600">
-            <tr>
-                <td>NAMA BARANG</td>
-                <td><input type="text" name="nama_barang" value="{{ $produk->nama_barang }}"></td>
-            </tr>
-            <tr>
-                <td>JUMLAH BARANG</td>
-                <td><input type="number" name="jumlah" value="{{ $produk->jumlah }}"></td>
-            </tr>
-            <tr>
-                <td><a href="{{ route('produk.index') }}">Kembali</a></td>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
+    .detail-header {
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 1rem;
+        margin-bottom: 1.5rem;
+    }
 
-</body>
-</html>
+    .detail-header h2 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .detail-header .badge {
+        display: inline-block;
+        padding: 0.35rem 0.75rem;
+        background: #333;
+        color: white;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .detail-row {
+        display: flex;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #666;
+        width: 200px;
+        font-size: 0.9rem;
+    }
+
+    .detail-value {
+        flex: 1;
+        color: #333;
+        font-size: 0.9rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 2rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary {
+        background: #333;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #000;
+    }
+
+    .btn-secondary {
+        background: #fff;
+        color: #333;
+        border: 1px solid #e0e0e0;
+    }
+
+    .btn-secondary:hover {
+        background: #f8f8f8;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+    }
+</style>
+
+<div class="detail-container">
+    <div class="page-header">
+        <h1>Detail Produk</h1>
+        <p>Informasi lengkap produk</p>
+    </div>
+
+    <div class="detail-card">
+        <div class="detail-header">
+            <h2>{{ $produk->nama_barang }}</h2>
+            <span class="badge">ID: #{{ $produk->id }}</span>
+        </div>
+
+        <div class="detail-row">
+            <div class="detail-label">Nama Barang</div>
+            <div class="detail-value"><strong>{{ $produk->nama_barang }}</strong></div>
+        </div>
+
+        <div class="detail-row">
+            <div class="detail-label">Jumlah Stok</div>
+            <div class="detail-value"><strong>{{ $produk->jumlah }}</strong> unit</div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="{{ route('produk.edit', $produk->id) }}" class="btn btn-primary">Edit Produk</a>
+            <a href="{{ route('produk.index') }}" class="btn btn-secondary">Kembali</a>
+            <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" style="display: inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus produk ini?')">Hapus</button>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

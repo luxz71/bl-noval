@@ -27,7 +27,8 @@
             font-size: 0.9rem;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #e0e0e0;
@@ -37,12 +38,14 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #333;
         }
 
-        .form-group input.error {
+        .form-group input.error,
+        .form-group select.error {
             border-color: #dc3545;
         }
 
@@ -112,40 +115,27 @@
                 @csrf
 
                 <div class="form-group">
-                <label for="nama_barang">Nama Barang</label>
-                <input 
-                    type="text" 
-                    id="nama_barang" 
-                    name="nama_barang" 
-                    placeholder="Masukkan nama barang (hanya huruf)"
-                    value="{{ old('nama_barang') }}"
-                    class="{{ $errors->has('nama_barang') ? 'error' : '' }}"
-                    required
-                >
-                @if($errors->has('nama_barang'))
-                    <div class="error-message show">{{ $errors->first('nama_barang') }}</div>
-                @else
-                    <div class="error-message" id="error-nama">Nama barang hanya boleh berisi huruf dan spasi</div>
-                @endif
-            </div>
+                    <label for="nama_barang">Nama Barang</label>
+                    <input type="text" id="nama_barang" name="nama_barang" placeholder="Masukkan nama barang (hanya huruf)"
+                        value="{{ old('nama_barang') }}" class="{{ $errors->has('nama_barang') ? 'error' : '' }}" required>
+                    @if($errors->has('nama_barang'))
+                        <div class="error-message show">{{ $errors->first('nama_barang') }}</div>
+                    @else
+                        <div class="error-message" id="error-nama">Nama barang hanya boleh berisi huruf dan spasi</div>
+                    @endif
+                </div>
 
-            <div class="form-group">
-                <label for="jumlah">Jumlah</label>
-                <input 
-                    type="text" 
-                    id="jumlah" 
-                    name="jumlah" 
-                    placeholder="Masukkan jumlah (hanya angka)"
-                    value="{{ old('jumlah') }}"
-                    class="{{ $errors->has('jumlah') ? 'error' : '' }}"
-                    required
-                >
-                @if($errors->has('jumlah'))
-                    <div class="error-message show">{{ $errors->first('jumlah') }}</div>
-                @else
-                    <div class="error-message" id="error-jumlah">Jumlah hanya boleh berisi angka</div>
-                @endif
-            </div>
+                <div class="form-group">
+                    <label for="jumlah">Jumlah</label>
+                    <input type="text" id="jumlah" name="jumlah" placeholder="Masukkan jumlah (hanya angka)"
+                        value="{{ old('jumlah') }}" class="{{ $errors->has('jumlah') ? 'error' : '' }}" required>
+                    @if($errors->has('jumlah'))
+                        <div class="error-message show">{{ $errors->first('jumlah') }}</div>
+                    @else
+                        <div class="error-message" id="error-jumlah">Jumlah hanya boleh berisi angka</div>
+                    @endif
+                </div>
+
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Simpan Produk</button>

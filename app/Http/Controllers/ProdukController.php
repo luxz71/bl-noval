@@ -19,44 +19,65 @@ class ProdukController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-// Menampilkan halaman form (Add)
-    public function create() {
+    // Menampilkan halaman form (Add)
+    public function create()
+    {
         return view('produk.add');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
-        // Logika ini sama dengan Produk::create([...]) di Tinker
-        Produk::create([
-            'nama_barang' => $request->nama_barang,
-            'jumlah'      => $request->jumlah,
+    public function store(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'nama_barang' => [
+                'required',
+                'regex:/^[a-zA-Z\s]+$/', // Hanya huruf dan spasi
+            ],
+            'jumlah' => [
+                'required',
+                'numeric', // Hanya angka
+                'min:1', // Minimal 1
+            ],
+        ], [
+            'nama_barang.required' => 'Nama barang wajib diisi',
+            'nama_barang.regex' => 'Nama barang hanya boleh berisi huruf dan spasi',
+            'jumlah.required' => 'Jumlah wajib diisi',
+            'jumlah.numeric' => 'Jumlah hanya boleh berisi angka',
+            'jumlah.min' => 'Jumlah minimal 1',
         ]);
 
-        return redirect()->route('produk.index');
+        // Simpan data
+        Produk::create([
+            'nama_barang' => $validated['nama_barang'],
+            'jumlah' => $validated['jumlah'],
+        ]);
+
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
     /**
      * Display the specified resource.
      */
-/*     
-    public function show($id) 
-    {
-        //var_dump($id);
-        $produk = Produk::findOrFail($id);
-        //dd($produk);
-        //dd($produk);
-        return view('produk.detail', compact('produk'));
-    }
-     */
+    /*     
+        public function show($id) 
+        {
+            //var_dump($id);
+            $produk = Produk::findOrFail($id);
+            //dd($produk);
+            //dd($produk);
+            return view('produk.detail', compact('produk'));
+        }
+         */
 
 
     public function show(Produk $produk)
     {
         return view('produk.detail', compact('produk'));
     }
-    
+
     /* 
     public function show(Produk $produk)
     {
@@ -66,11 +87,11 @@ class ProdukController extends Controller
         return view('produk.detail', compact('produk'));
     }
  */
-    
+
     /**
      * Show the form for editing the specified resource.
      */
-  public function edit(Produk $produk) 
+    public function edit(Produk $produk)
     {
         return view('produk.edit', compact('produk'));
     }
@@ -78,11 +99,11 @@ class ProdukController extends Controller
     /**
      * Update the specified resource in storage.
      */
-  public function update(Request $request, Produk $produk)
+    public function update(Request $request, Produk $produk)
     {
         $produk->update([
             'nama_barang' => $request->nama_barang,
-            'jumlah'      => $request->jumlah,
+            'jumlah' => $request->jumlah,
         ]);
 
         return redirect()->route('produk.index');
@@ -91,7 +112,7 @@ class ProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produk $produk) 
+    public function destroy(Produk $produk)
     {
         $produk->delete();
         return redirect()->route('produk.index');

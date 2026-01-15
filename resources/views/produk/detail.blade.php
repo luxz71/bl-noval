@@ -1,3 +1,9 @@
+@extends('layouts.app')
+
+@section('title', 'Tambah Produk - BL-Noval')
+
+@section('content')
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,3 +29,4 @@
 
 </body>
 </html>
+@endsection

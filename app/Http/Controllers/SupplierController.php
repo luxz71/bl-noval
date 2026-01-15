@@ -10,9 +10,19 @@ class SupplierController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Supplier::all();
+        $query = Supplier::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nama', 'like', "%{$search}%")
+                ->orWhere('kota', 'like', "%{$search}%")
+                ->orWhere('no_hp', 'like', "%{$search}%")
+                ->orWhere('alamat', 'like', "%{$search}%");
+        }
+
+        $data = $query->get();
         return view('supplier.index', compact('data'));
     }
 

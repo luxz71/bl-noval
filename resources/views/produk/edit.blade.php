@@ -3,222 +3,140 @@
 @section('title', 'Edit Produk - BL-Noval')
 
 @section('content')
-    <style>
-        .form-container {
-            max-width: 600px;
-        }
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Edit Produk</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('produk.index') }}">Produk</a></li>
+            <li class="breadcrumb-item active">Edit</li>
+        </ol>
 
-        .form-card {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-edit me-1"></i>
+                        Form Edit Produk
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('produk.update', $produk->id) }}" method="POST" id="productForm">
+                            @csrf
+                            @method('PUT')
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+                            <div class="mb-3">
+                                <label for="nama_barang" class="form-label">
+                                    <i class="fas fa-tag me-1"></i>Nama Barang <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control @error('nama_barang') is-invalid @enderror"
+                                    id="nama_barang" name="nama_barang" placeholder="Masukkan nama barang"
+                                    value="{{ old('nama_barang', $produk->nama_barang) }}" required>
+                                @error('nama_barang')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">Nama barang hanya boleh berisi huruf dan spasi</div>
+                            </div>
 
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
+                            <div class="mb-3">
+                                <label for="jumlah" class="form-label">
+                                    <i class="fas fa-sort-numeric-up me-1"></i>Jumlah <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" class="form-control @error('jumlah') is-invalid @enderror" id="jumlah"
+                                    name="jumlah" placeholder="Masukkan jumlah stok"
+                                    value="{{ old('jumlah', $produk->jumlah) }}" min="0" required>
+                                @error('jumlah')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">Masukkan jumlah stok produk (hanya angka)</div>
+                            </div>
 
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: border-color 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
+                            <hr class="my-4">
 
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #333;
-        }
-
-        .form-group input.error,
-        .form-group select.error {
-            border-color: #dc3545;
-        }
-
-        .error-message {
-            color: #dc3545;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary {
-            background: #333;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #000;
-        }
-
-        .btn-primary:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background: #fff;
-            color: #333;
-            border: 1px solid #e0e0e0;
-        }
-
-        .btn-secondary:hover {
-            background: #f8f8f8;
-        }
-    </style>
-
-    <div class="form-container">
-        <div class="page-header">
-            <h1>Edit Produk</h1>
-            <p>Update informasi produk</p>
-        </div>
-
-        <div class="form-card">
-            <form action="{{ route('produk.update', $produk->id) }}" method="POST" id="productForm">
-                @csrf
-                @method('PUT')
-
-                <div class="form-group">
-                <label for="nama_barang">Nama Barang</label>
-                <input 
-                    type="text" 
-                    id="nama_barang" 
-                    name="nama_barang" 
-                    placeholder="Masukkan nama barang (hanya huruf)"
-                    value="{{ old('nama_barang', $produk->nama_barang) }}"
-                    class="{{ $errors->has('nama_barang') ? 'error' : '' }}"
-                    required
-                >
-                @if($errors->has('nama_barang'))
-                    <div class="error-message show">{{ $errors->first('nama_barang') }}</div>
-                @else
-                    <div class="error-message" id="error-nama">Nama barang hanya boleh berisi huruf dan spasi</div>
-                @endif
-            </div>
-
-            <div class="form-group">
-                <label for="jumlah">Jumlah</label>
-                <input 
-                    type="text" 
-                    id="jumlah" 
-                    name="jumlah" 
-                    placeholder="Masukkan jumlah (hanya angka)"
-                    value="{{ old('jumlah', $produk->jumlah) }}"
-                    class="{{ $errors->has('jumlah') ? 'error' : '' }}"
-                    required
-                >
-                @if($errors->has('jumlah'))
-                    <div class="error-message show">{{ $errors->first('jumlah') }}</div>
-                @else
-                    <div class="error-message" id="error-jumlah">Jumlah hanya boleh berisi angka</div>
-                @endif
-            </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Update Produk</button>
-                    <a href="{{ route('produk.index') }}" class="btn btn-secondary">Kembali</a>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-1"></i> Update Produk
+                                </button>
+                                <a href="{{ route('produk.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Kembali
+                                </a>
+                                <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" class="ms-auto">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Yakin ingin menghapus produk ini?')">
+                                        <i class="fas fa-trash me-1"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </form>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card mb-4 border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Informasi Produk
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm table-borderless mb-0">
+                            <tr>
+                                <td class="text-muted">ID Produk</td>
+                                <td><strong>#{{ $produk->id }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Nama</td>
+                                <td>{{ $produk->nama_barang }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Stok Saat Ini</td>
+                                <td>
+                                    @if($produk->jumlah > 10)
+                                        <span class="badge bg-success">{{ $produk->jumlah }} unit</span>
+                                    @elseif($produk->jumlah > 0)
+                                        <span class="badge bg-warning text-dark">{{ $produk->jumlah }} unit</span>
+                                    @else
+                                        <span class="badge bg-danger">Habis</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card mb-4 bg-light">
+                    <div class="card-header">
+                        <i class="fas fa-lightbulb me-1"></i>
+                        Tips
+                    </div>
+                    <div class="card-body">
+                        <p class="small text-muted mb-0">
+                            <i class="fas fa-asterisk text-danger me-1"></i>
+                            Perubahan akan langsung tersimpan setelah menekan tombol "Update Produk"
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        const form = document.getElementById('productForm');
-        const namaBarangInput = document.getElementById('nama_barang');
-        const jumlahInput = document.getElementById('jumlah');
-        const errorNama = document.getElementById('error-nama');
-        const errorJumlah = document.getElementById('error-jumlah');
+        document.getElementById('productForm').addEventListener('submit', function (e) {
+            const namaBarang = document.getElementById('nama_barang').value.trim();
+            const jumlah = document.getElementById('jumlah').value.trim();
 
-        // Validasi Nama Barang (hanya huruf dan spasi)
-        namaBarangInput.addEventListener('input', function () {
-            const value = this.value;
-            const hasNumbers = /\d/.test(value);
-
-            if (hasNumbers || value.trim() === '') {
-                this.classList.add('error');
-                errorNama.classList.add('show');
-            } else {
-                this.classList.remove('error');
-                errorNama.classList.remove('show');
-            }
-        });
-
-        // Validasi Jumlah (hanya angka)
-        jumlahInput.addEventListener('input', function () {
-            const value = this.value;
-            const hasLetters = /[a-zA-Z]/.test(value);
-            const isNotNumber = !/^\d+$/.test(value) && value !== '';
-
-            if (hasLetters || isNotNumber || value.trim() === '') {
-                this.classList.add('error');
-                errorJumlah.classList.add('show');
-            } else {
-                this.classList.remove('error');
-                errorJumlah.classList.remove('show');
-            }
-        });
-
-        // Validasi saat submit
-        form.addEventListener('submit', function (e) {
-            let isValid = true;
-
-            // Validasi Nama Barang
-            const namaValue = namaBarangInput.value.trim();
-            if (namaValue === '' || /\d/.test(namaValue)) {
+            // Validasi nama barang (hanya huruf dan spasi)
+            if (/\d/.test(namaBarang)) {
                 e.preventDefault();
-                namaBarangInput.classList.add('error');
-                errorNama.classList.add('show');
-                isValid = false;
+                alert('Nama barang hanya boleh berisi huruf dan spasi!');
+                return false;
             }
 
-            // Validasi Jumlah
-            const jumlahValue = jumlahInput.value.trim();
-            if (jumlahValue === '' || !/^\d+$/.test(jumlahValue)) {
+            // Validasi jumlah (harus angka positif)
+            if (jumlah === '' || isNaN(jumlah) || parseInt(jumlah) < 0) {
                 e.preventDefault();
-                jumlahInput.classList.add('error');
-                errorJumlah.classList.add('show');
-                isValid = false;
-            }
-
-            if (!isValid) {
-                alert('Mohon perbaiki kesalahan pada form!');
+                alert('Jumlah harus berupa angka positif!');
+                return false;
             }
         });
     </script>

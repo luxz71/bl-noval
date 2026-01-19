@@ -3,303 +3,146 @@
 @section('title', 'Tambah Supplier - BL-Noval')
 
 @section('content')
-    <style>
-        .form-container {
-            max-width: 600px;
-        }
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Tambah Supplier</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('supplier.index') }}">Supplier</a></li>
+            <li class="breadcrumb-item active">Tambah</li>
+        </ol>
 
-        .form-card {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-plus-circle me-1"></i>
+                        Form Tambah Supplier Baru
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('supplier.store') }}" method="POST" id="supplierForm">
+                            @csrf
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+                            <div class="mb-3">
+                                <label for="nama" class="form-label">
+                                    <i class="fas fa-user me-1"></i>Nama Supplier <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama"
+                                    name="nama" placeholder="Masukkan nama supplier" value="{{ old('nama') }}" required>
+                                @error('nama')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">Nama supplier hanya boleh berisi huruf dan spasi</div>
+                            </div>
 
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
+                            <div class="mb-3">
+                                <label for="kota" class="form-label">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Kota <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control @error('kota') is-invalid @enderror" id="kota"
+                                    name="kota" placeholder="Masukkan nama kota" value="{{ old('kota') }}" required>
+                                @error('kota')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">Kota hanya boleh berisi huruf dan spasi</div>
+                            </div>
 
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: border-color 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
+                            <div class="mb-3">
+                                <label for="no_hp" class="form-label">
+                                    <i class="fas fa-phone me-1"></i>No. HP <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control @error('no_hp') is-invalid @enderror" id="no_hp"
+                                    name="no_hp" placeholder="Masukkan no. handphone" value="{{ old('no_hp') }}" required>
+                                @error('no_hp')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">No. HP hanya boleh berisi angka</div>
+                            </div>
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #333;
-        }
+                            <div class="mb-3">
+                                <label for="alamat" class="form-label">
+                                    <i class="fas fa-home me-1"></i>Alamat <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat"
+                                    name="alamat" rows="3" placeholder="Masukkan alamat lengkap"
+                                    required>{{ old('alamat') }}</textarea>
+                                @error('alamat')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-        .form-group input.error {
-            border-color: #dc3545;
-        }
+                            <hr class="my-4">
 
-        .error-message {
-            color: #dc3545;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary {
-            background: #333;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #000;
-        }
-
-        .btn-primary:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background: #fff;
-            color: #333;
-            border: 1px solid #e0e0e0;
-        }
-
-        .btn-secondary:hover {
-            background: #f8f8f8;
-        }
-    </style>
-
-    <div class="form-container">
-        <div class="page-header">
-            <h1>Tambah Supplier Baru</h1>
-            <p>Isi form di bawah untuk menambahkan supplier</p>
-        </div>
-
-        <div class="form-card">
-            <form action="{{ route('supplier.store') }}" method="POST" id="supplierForm">
-                @csrf
-
-                <div class="form-group">
-                    <label for="nama">Nama Supplier</label>
-                    <input 
-                        type="text" 
-                        id="nama" 
-                        name="nama" 
-                        placeholder="Masukkan nama supplier (hanya huruf)"
-                        value="{{ old('nama') }}"
-                        class="{{ $errors->has('nama') ? 'error' : '' }}"
-                        required
-                    >
-                    @if($errors->has('nama'))
-                        <div class="error-message show">{{ $errors->first('nama') }}</div>
-                    @else
-                        <div class="error-message" id="error-nama">Nama supplier hanya boleh berisi huruf dan spasi</div>
-                    @endif
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-1"></i> Simpan Supplier
+                                </button>
+                                <a href="{{ route('supplier.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Kembali
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="kota">Kota</label>
-                    <input 
-                        type="text" 
-                        id="kota" 
-                        name="kota" 
-                        placeholder="Masukkan nama kota (hanya huruf)"
-                        value="{{ old('kota') }}"
-                        class="{{ $errors->has('kota') ? 'error' : '' }}"
-                        required
-                    >
-                    @if($errors->has('kota'))
-                        <div class="error-message show">{{ $errors->first('kota') }}</div>
-                    @else
-                        <div class="error-message" id="error-kota">Kota hanya boleh berisi huruf dan spasi</div>
-                    @endif
+            <div class="col-lg-4">
+                <div class="card mb-4 bg-light">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Panduan
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Tips Pengisian Form</h6>
+                        <ul class="small mb-0">
+                            <li class="mb-2"><strong>Nama:</strong> Nama lengkap supplier atau perusahaan</li>
+                            <li class="mb-2"><strong>Kota:</strong> Lokasi kota supplier</li>
+                            <li class="mb-2"><strong>No. HP:</strong> Nomor yang dapat dihubungi</li>
+                            <li class="mb-2"><strong>Alamat:</strong> Alamat lengkap supplier</li>
+                        </ul>
+                        <hr>
+                        <p class="small text-muted mb-0">
+                            <i class="fas fa-asterisk text-danger me-1"></i>
+                            Field dengan tanda bintang wajib diisi
+                        </p>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="no_hp">No. HP</label>
-                    <input 
-                        type="text" 
-                        id="no_hp" 
-                        name="no_hp" 
-                        placeholder="Masukkan no. hp (hanya angka)"
-                        value="{{ old('no_hp') }}"
-                        class="{{ $errors->has('no_hp') ? 'error' : '' }}"
-                        required
-                    >
-                    @if($errors->has('no_hp'))
-                        <div class="error-message show">{{ $errors->first('no_hp') }}</div>
-                    @else
-                        <div class="error-message" id="error-no_hp">No. HP hanya boleh berisi angka</div>
-                    @endif
-                </div>
-
-                <div class="form-group">
-                    <label for="alamat">Alamat</label>
-                    <input 
-                        type="text" 
-                        id="alamat" 
-                        name="alamat" 
-                        placeholder="Masukkan alamat lengkap"
-                        value="{{ old('alamat') }}"
-                        class="{{ $errors->has('alamat') ? 'error' : '' }}"
-                        required
-                    >
-                    @if($errors->has('alamat'))
-                        <div class="error-message show">{{ $errors->first('alamat') }}</div>
-                    @else
-                        <div class="error-message" id="error-alamat">Alamat wajib diisi</div>
-                    @endif
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Simpan Supplier</button>
-                    <a href="{{ route('supplier.index') }}" class="btn btn-secondary">Kembali</a>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
     <script>
-        const form = document.getElementById('supplierForm');
-        const namaInput = document.getElementById('nama');
-        const kotaInput = document.getElementById('kota');
-        const noHpInput = document.getElementById('no_hp');
-        const alamatInput = document.getElementById('alamat');
-        const errorNama = document.getElementById('error-nama');
-        const errorKota = document.getElementById('error-kota');
-        const errorNoHp = document.getElementById('error-no_hp');
-        const errorAlamat = document.getElementById('error-alamat');
+        document.getElementById('supplierForm').addEventListener('submit', function (e) {
+            const nama = document.getElementById('nama').value.trim();
+            const kota = document.getElementById('kota').value.trim();
+            const noHp = document.getElementById('no_hp').value.trim();
+            const alamat = document.getElementById('alamat').value.trim();
 
-        // Validasi Nama (hanya huruf dan spasi)
-        namaInput.addEventListener('input', function () {
-            const value = this.value;
-            const hasNumbers = /\d/.test(value);
-
-            if (hasNumbers || value.trim() === '') {
-                this.classList.add('error');
-                errorNama.classList.add('show');
-            } else {
-                this.classList.remove('error');
-                errorNama.classList.remove('show');
-            }
-        });
-
-        // Validasi Kota (hanya huruf dan spasi)
-        kotaInput.addEventListener('input', function () {
-            const value = this.value;
-            const hasNumbers = /\d/.test(value);
-
-            if (hasNumbers || value.trim() === '') {
-                this.classList.add('error');
-                errorKota.classList.add('show');
-            } else {
-                this.classList.remove('error');
-                errorKota.classList.remove('show');
-            }
-        });
-
-        // Validasi No. HP (hanya angka)
-        noHpInput.addEventListener('input', function () {
-            const value = this.value;
-            const hasLetters = /[a-zA-Z]/.test(value);
-            const isNotNumber = !/^\d+$/.test(value) && value !== '';
-
-            if (hasLetters || isNotNumber || value.trim() === '') {
-                this.classList.add('error');
-                errorNoHp.classList.add('show');
-            } else {
-                this.classList.remove('error');
-                errorNoHp.classList.remove('show');
-            }
-        });
-
-        // Validasi Alamat (wajib diisi)
-        alamatInput.addEventListener('input', function () {
-            const value = this.value;
-
-            if (value.trim() === '') {
-                this.classList.add('error');
-                errorAlamat.classList.add('show');
-            } else {
-                this.classList.remove('error');
-                errorAlamat.classList.remove('show');
-            }
-        });
-
-        // Validasi saat submit
-        form.addEventListener('submit', function (e) {
-            let isValid = true;
-
-            // Validasi Nama
-            const namaValue = namaInput.value.trim();
-            if (namaValue === '' || /\d/.test(namaValue)) {
+            // Validasi nama (hanya huruf dan spasi)
+            if (/\d/.test(nama)) {
                 e.preventDefault();
-                namaInput.classList.add('error');
-                errorNama.classList.add('show');
-                isValid = false;
+                alert('Nama supplier hanya boleh berisi huruf dan spasi!');
+                return false;
             }
 
-            // Validasi Kota
-            const kotaValue = kotaInput.value.trim();
-            if (kotaValue === '' || /\d/.test(kotaValue)) {
+            // Validasi kota (hanya huruf dan spasi)
+            if (/\d/.test(kota)) {
                 e.preventDefault();
-                kotaInput.classList.add('error');
-                errorKota.classList.add('show');
-                isValid = false;
+                alert('Kota hanya boleh berisi huruf dan spasi!');
+                return false;
             }
 
-            // Validasi No. HP
-            const noHpValue = noHpInput.value.trim();
-            if (noHpValue === '' || !/^\d+$/.test(noHpValue)) {
+            // Validasi no hp (harus angka)
+            if (!/^\d+$/.test(noHp)) {
                 e.preventDefault();
-                noHpInput.classList.add('error');
-                errorNoHp.classList.add('show');
-                isValid = false;
+                alert('No. HP harus berupa angka!');
+                return false;
             }
 
-            // Validasi Alamat
-            const alamatValue = alamatInput.value.trim();
-            if (alamatValue === '') {
+            // Validasi alamat
+            if (alamat === '') {
                 e.preventDefault();
-                alamatInput.classList.add('error');
-                errorAlamat.classList.add('show');
-                isValid = false;
-            }
-
-            if (!isValid) {
-                alert('Mohon perbaiki kesalahan pada form!');
+                alert('Alamat wajib diisi!');
+                return false;
             }
         });
     </script>

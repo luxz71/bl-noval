@@ -3,198 +3,103 @@
 @section('title', 'Daftar Produk - BL-Noval')
 
 @section('content')
-<style>
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-    }
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Daftar Produk</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Produk</li>
+        </ol>
 
-    .btn {
-        padding: 0.65rem 1.25rem;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        display: inline-block;
-        border: none;
-        cursor: pointer;
-        font-size: 0.85rem;
-    }
+        <!-- Alert Success -->
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-    .btn-primary {
-        background: #333;
-        color: white;
-    }
-
-    .btn-primary:hover {
-        background: #000;
-    }
-
-    .btn-sm {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
-    }
-
-    .btn-edit {
-        background: #fff;
-        color: #333;
-        border: 1px solid #e0e0e0;
-    }
-
-    .btn-edit:hover {
-        background: #f8f8f8;
-    }
-
-    .btn-detail {
-        background: #fff;
-        color: #333;
-        border: 1px solid #e0e0e0;
-    }
-
-    .btn-detail:hover {
-        background: #f8f8f8;
-    }
-
-    .btn-delete {
-        background: #fff;
-        color: #dc3545;
-        border: 1px solid #dc3545;
-    }
-
-    .btn-delete:hover {
-        background: #dc3545;
-        color: white;
-    }
-
-    .table-container {
-        overflow-x: auto;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-    }
-
-    thead {
-        background: #f8f8f8;
-        border-bottom: 2px solid #e0e0e0;
-    }
-
-    th {
-        padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-        color: #333;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.5px;
-    }
-
-    td {
-        padding: 1rem;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    tbody tr {
-        transition: background-color 0.2s ease;
-    }
-
-    tbody tr:hover {
-        background-color: #f8f9fa;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-    }
-
-    .action-buttons form {
-        margin: 0;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 3rem;
-        color: #999;
-    }
-
-    .empty-state-icon {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-    }
-
-    @media (max-width: 768px) {
-        .page-header {
-            flex-direction: column;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .action-buttons {
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .action-buttons .btn {
-            width: 100%;
-        }
-    }
-</style>
-
-<div class="page-header">
-    <div>
-        <h1>Daftar Produk</h1>
-        <p>Kelola semua produk Anda di sini</p>
+        <!-- Card -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-box me-1"></i>
+                    Data Produk
+                </div>
+                <a href="{{ route('produk.create') }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1"></i> Tambah Produk
+                </a>
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple" class="table table-striped table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th width="60">No</th>
+                            <th>Nama Barang</th>
+                            <th width="120">Jumlah</th>
+                            <th width="200">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($data as $index => $item)
+                            <tr>
+                                <td class="text-center">{{ $index + 1 }}</td>
+                                <td>
+                                    <strong>{{ $item->nama_barang }}</strong>
+                                </td>
+                                <td class="text-center">
+                                    @if($item->jumlah > 10)
+                                        <span class="badge bg-success">{{ $item->jumlah }} unit</span>
+                                    @elseif($item->jumlah > 0)
+                                        <span class="badge bg-warning text-dark">{{ $item->jumlah }} unit</span>
+                                    @else
+                                        <span class="badge bg-danger">Habis</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ route('produk.show', $item->id) }}" class="btn btn-info btn-sm"
+                                            title="Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning btn-sm"
+                                            title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form action="{{ route('produk.destroy', $item->id) }}" method="POST"
+                                            style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus"
+                                                onclick="return confirm('Yakin ingin menghapus produk ini?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="fas fa-box-open fa-4x mb-3 d-block"></i>
+                                        <h5>Belum ada produk</h5>
+                                        <p class="mb-3">Mulai tambahkan produk pertama Anda</p>
+                                        <a href="{{ route('produk.create') }}" class="btn btn-primary">
+                                            <i class="fas fa-plus me-1"></i> Tambah Produk Baru
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <a href="{{ route('produk.create') }}" class="btn btn-primary">+ Tambah Produk Baru</a>
-</div>
-
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Barang</th>
-                <th>Jumlah</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($data as $index => $item)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td><strong>{{ $item->nama_barang }}</strong></td>
-                <td>{{ $item->jumlah }}</td>
-                <td>
-                    <div class="action-buttons">
-                        <a href="{{ route('produk.show', $item->id) }}" class="btn btn-sm btn-detail">Detail</a>
-                        <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-sm btn-edit">Edit</a>
-                        <form action="{{ route('produk.destroy', $item->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-delete" onclick="return confirm('Yakin ingin menghapus produk ini?')">Hapus</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="4">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📦</div>
-                        <h3>Belum ada produk</h3>
-                        <p>Mulai tambahkan produk pertama Anda</p>
-                    </div>
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
 @endsection
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+@endpush

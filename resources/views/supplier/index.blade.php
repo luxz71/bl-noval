@@ -174,17 +174,6 @@
         <a href="{{ route('supplier.create') }}" class="btn btn-primary">+ Tambah Supplier Baru</a>
     </div>
 
-    <div class="search-bar" style="margin-bottom: 1.5rem;">
-        <form action="{{ route('supplier.index') }}" method="GET" style="display: flex; gap: 0.75rem; max-width: 500px;">
-            <input type="text" name="search" placeholder="Cari nama, kota, no. hp, atau alamat..." value="{{ request('search') }}" 
-                   style="flex: 1; padding: 0.75rem; border: 1px solid #e0e0e0; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.9rem;">
-            <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">Cari</button>
-            @if(request('search'))
-                <a href="{{ route('supplier.index') }}" class="btn btn-secondary" style="padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: center;">Reset</a>
-            @endif
-        </form>
-    </div>
-
     <div class="table-container">
         <table>
             <thead>

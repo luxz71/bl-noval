@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::table('suppliers', function (Blueprint $table) {
             $table->string('no_hp')->after('kota')->default('-');
             $table->string('alamat')->after('no_hp')->default('-');
+
         });
     }
 

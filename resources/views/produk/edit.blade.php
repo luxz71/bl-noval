@@ -33,7 +33,7 @@
                                 @error('nama_barang')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <div class="form-text">Nama barang hanya boleh berisi huruf dan spasi</div>
+                                <div class="form-text">Nama barang boleh berisi huruf, angka, dan spasi</div>
                             </div>
 
                             <div class="mb-3">
@@ -49,6 +49,19 @@
                                 <div class="form-text">Masukkan jumlah stok produk (hanya angka)</div>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="harga" class="form-label">
+                                    <i class="fas fa-money-bill me-1"></i>Harga (Rp) <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" class="form-control @error('harga') is-invalid @enderror" id="harga"
+                                    name="harga" placeholder="Masukkan harga produk"
+                                    value="{{ old('harga', $produk->harga) }}" min="0" step="1000" required>
+                                @error('harga')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">Masukkan harga satuan produk</div>
+                            </div>
+
                             <hr class="my-4">
 
                             <div class="d-flex gap-2">
@@ -58,14 +71,6 @@
                                 <a href="{{ route('produk.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left me-1"></i> Kembali
                                 </a>
-                                <form action="{{ route('produk.destroy', $produk->id) }}" method="POST" class="ms-auto">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"
-                                        onclick="return confirm('Yakin ingin menghapus produk ini?')">
-                                        <i class="fas fa-trash me-1"></i> Hapus
-                                    </button>
-                                </form>
                             </div>
                         </form>
                     </div>
@@ -100,6 +105,11 @@
                                     @endif
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="text-muted">Harga</td>
+                                <td><span class="text-success fw-bold">Rp
+                                        {{ number_format($produk->harga, 0, ',', '.') }}</span></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -116,26 +126,45 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- Zona Berbahaya -->
+                <div class="card mb-4 border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Zona Berbahaya
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted small mb-3">Tindakan ini tidak dapat dibatalkan. Produk akan dihapus permanen.</p>
+                        <form action="{{ route('produk.destroy', $produk->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100"
+                                onclick="return confirm('Yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan!')">
+                                <i class="fas fa-trash me-1"></i> Hapus Produk
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         document.getElementById('productForm').addEventListener('submit', function (e) {
-            const namaBarang = document.getElementById('nama_barang').value.trim();
             const jumlah = document.getElementById('jumlah').value.trim();
-
-            // Validasi nama barang (hanya huruf dan spasi)
-            if (/\d/.test(namaBarang)) {
-                e.preventDefault();
-                alert('Nama barang hanya boleh berisi huruf dan spasi!');
-                return false;
-            }
+            const harga = document.getElementById('harga').value.trim();
 
             // Validasi jumlah (harus angka positif)
             if (jumlah === '' || isNaN(jumlah) || parseInt(jumlah) < 0) {
                 e.preventDefault();
                 alert('Jumlah harus berupa angka positif!');
+                return false;
+            }
+
+            // Validasi harga (harus angka positif)
+            if (harga === '' || isNaN(harga) || parseFloat(harga) < 0) {
+                e.preventDefault();
+                alert('Harga harus berupa angka positif!');
                 return false;
             }
         });

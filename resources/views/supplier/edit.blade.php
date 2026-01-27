@@ -83,14 +83,6 @@
                                 <a href="{{ route('supplier.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left me-1"></i> Kembali
                                 </a>
-                                <form action="{{ route('supplier.destroy', $supplier->id) }}" method="POST" class="ms-auto">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger"
-                                        onclick="return confirm('Yakin ingin menghapus supplier ini?')">
-                                        <i class="fas fa-trash me-1"></i> Hapus
-                                    </button>
-                                </form>
                             </div>
                         </form>
                     </div>
@@ -135,6 +127,26 @@
                             <i class="fas fa-asterisk text-danger me-1"></i>
                             Perubahan akan langsung tersimpan setelah menekan tombol "Update Supplier"
                         </p>
+                    </div>
+                </div>
+
+                <!-- Zona Berbahaya -->
+                <div class="card mb-4 border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Zona Berbahaya
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted small mb-3">Tindakan ini tidak dapat dibatalkan. Supplier akan dihapus
+                            permanen.</p>
+                        <form action="{{ route('supplier.destroy', $supplier->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100"
+                                onclick="return confirm('Yakin ingin menghapus supplier ini? Tindakan ini tidak dapat dibatalkan!')">
+                                <i class="fas fa-trash me-1"></i> Hapus Supplier
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -25,7 +25,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-4 mb-4">
                                 <div class="border rounded p-3 h-100">
                                     <div class="text-muted small mb-1">
                                         <i class="fas fa-tag me-1"></i>Nama Barang
@@ -33,7 +33,15 @@
                                     <h5 class="mb-0">{{ $produk->nama_barang }}</h5>
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-4">
+                            <div class="col-md-4 mb-4">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="text-muted small mb-1">
+                                        <i class="fas fa-money-bill me-1"></i>Harga Satuan
+                                    </div>
+                                    <h5 class="mb-0 text-success">Rp {{ number_format($produk->harga, 0, ',', '.') }}</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
                                 <div class="border rounded p-3 h-100">
                                     <div class="text-muted small mb-1">
                                         <i class="fas fa-cubes me-1"></i>Jumlah Stok

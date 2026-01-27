@@ -7,7 +7,7 @@
                 Dashboard
             </a>
 
-            <div class="sb-sidenav-menu-heading">Menu</div>
+            <div class="sb-sidenav-menu-heading">Inventori</div>
             <a class="nav-link {{ request()->routeIs('produk.*') ? 'active' : '' }}" href="{{ route('produk.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                 Produk
@@ -16,6 +16,18 @@
                 href="{{ route('supplier.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
                 Supplier
+            </a>
+
+            <div class="sb-sidenav-menu-heading">Transaksi</div>
+            <a class="nav-link {{ request()->routeIs('pelanggan.*') ? 'active' : '' }}"
+                href="{{ route('pelanggan.index') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                Pelanggan
+            </a>
+            <a class="nav-link {{ request()->routeIs('pembeli.*') ? 'active' : '' }}"
+                href="{{ route('pembeli.index') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
+                Transaksi Pembelian
             </a>
         </div>
     </div>

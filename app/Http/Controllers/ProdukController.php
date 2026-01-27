@@ -35,25 +35,34 @@ class ProdukController extends Controller
         $validated = $request->validate([
             'nama_barang' => [
                 'required',
-                'regex:/^[a-zA-Z\s]+$/', // Hanya huruf dan spasi
+                'regex:/^[a-zA-Z0-9\s]+$/', // Huruf, angka, dan spasi
             ],
             'jumlah' => [
                 'required',
-                'numeric', // Hanya angka
-                'min:1', // Minimal 1
+                'numeric',
+                'min:1',
+            ],
+            'harga' => [
+                'required',
+                'numeric',
+                'min:0',
             ],
         ], [
             'nama_barang.required' => 'Nama barang wajib diisi',
-            'nama_barang.regex' => 'Nama barang hanya boleh berisi huruf dan spasi',
+            'nama_barang.regex' => 'Nama barang hanya boleh berisi huruf, angka, dan spasi',
             'jumlah.required' => 'Jumlah wajib diisi',
             'jumlah.numeric' => 'Jumlah hanya boleh berisi angka',
             'jumlah.min' => 'Jumlah minimal 1',
+            'harga.required' => 'Harga wajib diisi',
+            'harga.numeric' => 'Harga hanya boleh berisi angka',
+            'harga.min' => 'Harga tidak boleh negatif',
         ]);
 
         // Simpan data
         Produk::create([
             'nama_barang' => $validated['nama_barang'],
             'jumlah' => $validated['jumlah'],
+            'harga' => $validated['harga'],
         ]);
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan!');
@@ -105,24 +114,33 @@ class ProdukController extends Controller
         $validated = $request->validate([
             'nama_barang' => [
                 'required',
-                'regex:/^[a-zA-Z\s]+$/',
+                'regex:/^[a-zA-Z0-9\s]+$/',
             ],
             'jumlah' => [
                 'required',
                 'numeric',
                 'min:1',
             ],
+            'harga' => [
+                'required',
+                'numeric',
+                'min:0',
+            ],
         ], [
             'nama_barang.required' => 'Nama barang wajib diisi',
-            'nama_barang.regex' => 'Nama barang hanya boleh berisi huruf dan spasi',
+            'nama_barang.regex' => 'Nama barang hanya boleh berisi huruf, angka, dan spasi',
             'jumlah.required' => 'Jumlah wajib diisi',
             'jumlah.numeric' => 'Jumlah hanya boleh berisi angka',
             'jumlah.min' => 'Jumlah minimal 1',
+            'harga.required' => 'Harga wajib diisi',
+            'harga.numeric' => 'Harga hanya boleh berisi angka',
+            'harga.min' => 'Harga tidak boleh negatif',
         ]);
 
         $produk->update([
             'nama_barang' => $validated['nama_barang'],
             'jumlah' => $validated['jumlah'],
+            'harga' => $validated['harga'],
         ]);
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil diupdate!');

@@ -48,6 +48,19 @@
                                 <div class="form-text">Masukkan jumlah stok produk (hanya angka)</div>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="harga" class="form-label">
+                                    <i class="fas fa-money-bill me-1"></i>Harga (Rp) <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" class="form-control @error('harga') is-invalid @enderror" id="harga"
+                                    name="harga" placeholder="Masukkan harga produk" value="{{ old('harga') }}" min="0"
+                                    step="1000" required>
+                                @error('harga')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">Masukkan harga satuan produk</div>
+                            </div>
+
                             <hr class="my-4">
 
                             <div class="d-flex gap-2">
@@ -74,6 +87,7 @@
                         <ul class="small mb-0">
                             <li class="mb-2"><strong>Nama Barang:</strong> Gunakan nama yang jelas dan mudah dikenali</li>
                             <li class="mb-2"><strong>Jumlah:</strong> Stok awal produk yang tersedia</li>
+                            <li class="mb-2"><strong>Harga:</strong> Harga satuan produk dalam Rupiah</li>
                         </ul>
                         <hr>
                         <p class="small text-muted mb-0">
@@ -90,18 +104,19 @@
         document.getElementById('productForm').addEventListener('submit', function (e) {
             const namaBarang = document.getElementById('nama_barang').value.trim();
             const jumlah = document.getElementById('jumlah').value.trim();
-
-            // Validasi nama barang (hanya huruf dan spasi)
-            if (/\d/.test(namaBarang)) {
-                e.preventDefault();
-                alert('Nama barang hanya boleh berisi huruf dan spasi!');
-                return false;
-            }
+            const harga = document.getElementById('harga').value.trim();
 
             // Validasi jumlah (harus angka positif)
             if (jumlah === '' || isNaN(jumlah) || parseInt(jumlah) < 0) {
                 e.preventDefault();
                 alert('Jumlah harus berupa angka positif!');
+                return false;
+            }
+
+            // Validasi harga (harus angka positif)
+            if (harga === '' || isNaN(harga) || parseFloat(harga) < 0) {
+                e.preventDefault();
+                alert('Harga harus berupa angka positif!');
                 return false;
             }
         });

@@ -35,6 +35,7 @@
                         <tr>
                             <th width="60">No</th>
                             <th>Nama Barang</th>
+                            <th width="150">Harga</th>
                             <th width="120">Jumlah</th>
                             <th width="200">Aksi</th>
                         </tr>
@@ -45,6 +46,9 @@
                                 <td class="text-center">{{ $index + 1 }}</td>
                                 <td>
                                     <strong>{{ $item->nama_barang }}</strong>
+                                </td>
+                                <td>
+                                    <span class="text-success fw-bold">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
                                 </td>
                                 <td class="text-center">
                                     @if($item->jumlah > 10)
@@ -79,7 +83,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center py-5">
+                                <td colspan="5" class="text-center py-5">
                                     <div class="text-muted">
                                         <i class="fas fa-box-open fa-4x mb-3 d-block"></i>
                                         <h5>Belum ada produk</h5>

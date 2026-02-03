@@ -24,7 +24,7 @@
     ```bash
     php artisan migrate
     php artisan storage:link
-    php atisan migrate:fresh --seed
+    php artisan migrate:fresh --seed
     ```
 
 6.  **Jalankan Server**
